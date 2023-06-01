@@ -70,4 +70,39 @@ public class WeightedGraph<V> {
         }
         System.out.println();
     }
+
+    public Map<Vertex<V>, Double> Dijkstra(Vertex<V> start) {
+        validateVertex(start);
+
+        Map<Vertex<V>, Double> distances = new HashMap<>();
+        Map<Vertex<V>, Vertex<V>> previous = new HashMap<>();
+
+        PriorityQueue<Vertex<V>> queue = new PriorityQueue<>(Comparator.comparingDouble(distances::get));
+        for (Vertex<V> vertex : adjacencyList.keySet()) {
+            distances.put(vertex, Double.POSITIVE_INFINITY);
+            previous.put(vertex, null);
+            queue.add(vertex);
+        }
+
+        distances.put(start, 0.0);
+
+        while (!queue.isEmpty()) {
+            Vertex<V> currentVertex = queue.poll();
+            if (distances.get(currentVertex) == Double.POSITIVE_INFINITY) {
+                break;
+            }
+
+            List<Vertex<V>> neighbors = adjacencyList.get(currentVertex);
+            for (Vertex<V> neighbor : neighbors) {
+                double newDistance = distances.get(currentVertex) + currentVertex.getAdjacentVertices().get(neighbor);
+                if (newDistance < distances.get(neighbor)) {
+                    queue.remove(neighbor);
+                    distances.put(neighbor, newDistance);
+                    previous.put(neighbor, currentVertex);
+                    queue.add(neighbor);
+                }
+            }
+        }
+        return distances;
+    }
 }
