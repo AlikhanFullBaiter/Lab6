@@ -1,9 +1,6 @@
 package src;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class WeightedGraph<V> {
     private Map<Vertex<V>, List<Vertex<V>>> adjacencyList;
@@ -48,4 +45,29 @@ public class WeightedGraph<V> {
         return adjacencyList.get(vertex);
     }
 
+    public void BFS(Vertex<V> start) {
+        validateVertex(start);
+        Map<Vertex<V>, Boolean> visited = new HashMap<>();
+        for (Vertex<V> vertex : adjacencyList.keySet()) {
+            visited.put(vertex, false);
+        }
+
+        Queue<Vertex<V>> queue = new LinkedList<>();
+        queue.add(start);
+        visited.put(start, true);
+
+        while (!queue.isEmpty()) {
+            Vertex<V> currentVertex = queue.poll();
+            System.out.println(currentVertex.getData() + " ");
+
+            List<Vertex<V>> neighbors = adjacencyList.get(currentVertex);
+            for (Vertex<V> neighbor : neighbors) {
+                if (!visited.get(neighbor)) {
+                    queue.add(neighbor);
+                    visited.put(neighbor, true);
+                }
+            }
+        }
+        System.out.println();
+    }
 }
