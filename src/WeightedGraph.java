@@ -36,4 +36,16 @@ public class WeightedGraph<V> {
         source.getAdjacentVertices().remove(destination);
         destination.getAdjacentVertices().remove(source);
     }
+
+    public boolean hasEdge(Vertex<V> source, Vertex<V> destination) {
+        validateVertex(source);
+        validateVertex(destination);
+
+        return source.getAdjacentVertices().containsKey(destination);
+    }
+    public List<Vertex<V>> getNeighbors(Vertex<V> vertex) {
+        validateVertex(vertex);
+        return adjacencyList.get(vertex);
+    }
+
 }
